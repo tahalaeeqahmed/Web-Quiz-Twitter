@@ -1,27 +1,46 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Feed } from './Components/Feed';
 import { TweetBox } from './Components/TweetBox';
 
 const Home: React.FC = () => {
   const [tweets, setTweets] = useState<{ id: number, content: string, timestamp: Date, likes: number }[]>([]);
 
-  const addTweet = (content: string) => {
-    const newTweet = {
-      id: tweets.length + 1,
-      content,
-      timestamp: new Date(),
-      likes: 0
+  useEffect(() => {
+    const fetchTweets = async () => {
+      const res = await fetch('/api/tweets');
+      const data = await res.json();
+      setTweets(data);
     };
+
+    fetchTweets();
+  }, []);
+
+  const addTweet = async (content: string) => {
+    const res = await fetch('/api/tweets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    const newTweet = await res.json();
     setTweets([newTweet, ...tweets]);
   };
 
-  const deleteTweet = (id: number) => {
+  const deleteTweet = async (id: number) => {
+    await fetch(`/api/tweets/${id}`, {
+      method: 'DELETE',
+    });
     setTweets(tweets.filter(tweet => tweet.id !== id));
   };
 
-  const likeTweet = (id: number) => {
+  const likeTweet = async (id: number) => {
+    await fetch(`/api/tweets/${id}/like`, {
+      method: 'POST',
+    });
     setTweets(tweets.map(tweet => tweet.id === id ? { ...tweet, likes: tweet.likes + 1 } : tweet));
   };
 
