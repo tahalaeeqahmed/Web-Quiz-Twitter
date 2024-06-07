@@ -14,7 +14,7 @@ interface TweetProps {
 
 export const Tweet: React.FC<TweetProps> = ({ id, content, timestamp, likes, deleteTweet, likeTweet }) => {
   return (
-    <div className="border p-4 my-2 rounded-lg flex justify-between items-start">
+    <div className="border p-4 my-6 rounded-lg flex justify-between items-start">
       <div>
         <p>{content}</p>
         <p className="text-gray-500 text-sm">
