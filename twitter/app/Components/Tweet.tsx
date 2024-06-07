@@ -20,7 +20,7 @@ export const Tweet: React.FC<TweetProps> = ({ id, content, timestamp, likes, del
         <p className="text-gray-500 text-sm">
           {formatDistanceToNow(new Date(timestamp))} ago
         </p>
-        <div className="flex items-center mt-2">
+        <div className="flex items-center mt-4">
           <button onClick={() => likeTweet(id)} className="mr-2">
             <span role="img" aria-label="like">❤️</span> {likes}
           </button>
